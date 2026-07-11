@@ -1,4 +1,8 @@
-import { TrendingCoinsFallback } from "@/components/home/fallback";
+import CoinOverview from "@/components/home/CoinOverview";
+import {
+  CoinOverviewFallback,
+  TrendingCoinsFallback,
+} from "@/components/home/fallback";
 import TrendingCoins from "@/components/home/TrendingCoins";
 import { Suspense } from "react";
 
@@ -6,7 +10,9 @@ export default function Home() {
   return (
     <main className="main-container">
       <section className="home-grid">
-        <p>CoinOverview</p>
+        <Suspense fallback={<CoinOverviewFallback />}>
+          <CoinOverview />
+        </Suspense>
         <Suspense fallback={<TrendingCoinsFallback />}>
           <TrendingCoins />
         </Suspense>
