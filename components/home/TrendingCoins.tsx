@@ -30,7 +30,7 @@ const TrendingCoins = async () => {
         const item = coin.item;
 
         return (
-          <Link href={`/coins/${item.id}`}>
+          <Link href={`/coins/${item.id}`} className="text-gray-200">
             <Image src={item.large} alt={item.name} width={36} height={36} />
             <p>{item.name}</p>
           </Link>
@@ -72,7 +72,7 @@ const TrendingCoins = async () => {
 
   return (
     <div id="trending-coins">
-      <h4>Trending Coins</h4>
+      <h4 className="text-gray-50">Trending Coins</h4>
 
       <DataTable
         data={trendingCoins.coins.slice(0, 6) || []}
