@@ -25,3 +25,20 @@ declare type QueryParams = Record<
   string,
   string | number | boolean | undefined
 >;
+
+declare interface TrendingCoin {
+  item: {
+    id: string;
+    name: string;
+    symbol: string;
+    market_cap_rank: number;
+    thumb: string;
+    large: string;
+    data: {
+      price: number;
+      price_change_percentage_24h: {
+        usd: number;
+      };
+    };
+  };
+}
