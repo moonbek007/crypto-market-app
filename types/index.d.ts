@@ -16,3 +16,12 @@ declare interface DataTableProps<T> {
   bodyRowClassName?: string;
   bodyCellClassName?: string;
 }
+
+declare interface CoinGeckoErrorBody {
+  error?: string;
+}
+
+declare type QueryParams = Record<
+  string,
+  string | number | boolean | undefined
+>;
