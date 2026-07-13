@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import DataTable from "@/components/DataTable";
+import CoinsPagination from "@/components/CoinsPagination";
+
 import { fetcher } from "@/lib/coingecko.actions";
 import { cn, formatPercentage, formatCurrency } from "@/lib/utils";
 
@@ -74,6 +76,11 @@ const Coins = async ({ searchParams }: NextPageProps) => {
     },
   ];
 
+  const hasMorePages = coinsData.length === perPage;
+
+  const estimatedTotalPages =
+    currentPage >= 100 ? Math.ceil(currentPage / 100) * 100 + 100 : 100;
+
   return (
     <main id="coins-page">
       <div className="content">
@@ -84,6 +91,12 @@ const Coins = async ({ searchParams }: NextPageProps) => {
           columns={columns}
           data={coinsData}
           rowKey={(coin) => coin.id}
+        />
+
+        <CoinsPagination
+          currentPage={currentPage}
+          totalPages={estimatedTotalPages}
+          hasMorePages={hasMorePages}
         />
       </div>
     </main>
