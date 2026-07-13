@@ -99,3 +99,14 @@ declare interface Category {
   market_cap: number;
   volume_24h: number;
 }
+
+declare type OHLCData = [number, number, number, number, number];
+
+declare type Period =
+  | "daily"
+  | "weekly"
+  | "monthly"
+  | "3months"
+  | "6months"
+  | "yearly"
+  | "max";
