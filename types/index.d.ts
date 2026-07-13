@@ -108,5 +108,12 @@ declare type Period =
   | "monthly"
   | "3months"
   | "6months"
-  | "yearly"
-  | "max";
+  | "yearly";
+
+declare interface CandlestickChartProps {
+  data?: OHLCData[];
+  coinId: string;
+  height?: number;
+  children?: React.ReactNode;
+  initialPeriod?: Period;
+}
