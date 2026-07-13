@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
+@variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -89,6 +90,21 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --dark-900: #000510;
+  --dark-700: #0f1316;
+  --dark-500: #1a2027;
+  --dark-400: #1e2833;
+
+  --purple-600: #1b254b;
+  --purple-100: #a3aed0;
+
+  --green-500: #76da44;
+  --green-400: #2ebe7b;
+  --green-300: #99e39e;
+
+  --red-500: #ff685f;
+  --yellow-500: #dabe44;
 }
 
 .dark {
