@@ -132,6 +132,11 @@ declare interface CoinMarketData {
   low_24h: number;
   price_change_24h: number;
   price_change_percentage_24h: number;
+  price_change_percentage_24h_in_currency: number;
+  price_change_percentage_7d_in_currency: number;
+  price_change_percentage_14d_in_currency: number;
+  price_change_percentage_30d_in_currency: number;
+  price_change_percentage_1y_in_currency: number;
   market_cap_change_24h: number;
   market_cap_change_percentage_24h: number;
   circulating_supply: number;
@@ -146,13 +151,22 @@ declare interface CoinMarketData {
   last_updated: string;
 }
 
-interface NextPageProps {
+declare interface NextPageProps {
   params: Promise<{ [key: string]: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-interface Pagination {
+declare interface Pagination {
   currentPage: number;
   totalPages: number;
   hasMorePages: boolean;
+}
+
+declare interface CoinHeaderProps {
+  name: string;
+  image: string;
+  currentPrice?: number;
+  priceChangePercentage24h: number;
+  priceChangePercentage30d: number;
+  marketCapRank: number;
 }
