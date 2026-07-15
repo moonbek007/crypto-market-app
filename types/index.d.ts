@@ -170,3 +170,9 @@ declare interface CoinHeaderProps {
   priceChangePercentage30d: number;
   marketCapRank: number;
 }
+
+declare interface ConverterProps {
+  symbol: string;
+  icon: string;
+  priceList: Record<string, number>;
+}
