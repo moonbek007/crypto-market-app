@@ -1,4 +1,5 @@
 import CoinHeader from "@/components/CoinHeader";
+import Converter from "@/components/Converter";
 
 import { fetcher } from "@/lib/coingecko.actions";
 
@@ -9,6 +10,11 @@ const Page = async ({ params }: NextPageProps) => {
     vs_currency: "usd",
     ids: id,
     price_change_percentage: "24h,30d",
+  });
+
+  const coinPrice = await fetcher<CoinPriceData>(`/simple//price`, {
+    vs_currencies: "usd,eur,gbp",
+    ids: id,
   });
 
   return (
@@ -23,6 +29,13 @@ const Page = async ({ params }: NextPageProps) => {
           priceChangePercentage30d={
             coinData.price_change_percentage_30d_in_currency
           }
+        />
+      </section>
+      <section className="secondary">
+        <Converter
+          symbol={coinData.symbol}
+          icon={coinData.image}
+          priceList={coinPrice[id]}
         />
       </section>
     </main>

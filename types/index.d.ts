@@ -176,3 +176,7 @@ declare interface ConverterProps {
   icon: string;
   priceList: Record<string, number>;
 }
+
+declare interface CoinPriceData {
+  [name: string]: Record<string, number>;
+}
