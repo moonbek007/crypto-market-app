@@ -570,7 +570,7 @@
       }
 
       .details-grid {
-        @apply rounded-lg grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-3 sm:gap-5;
+        @apply rounded-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3 sm:gap-5;
 
         li {
           @apply text-base bg-dark-500 px-5 py-6 rounded-lg flex flex-col gap-3;
