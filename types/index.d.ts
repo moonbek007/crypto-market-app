@@ -55,7 +55,9 @@ declare interface CoinDetailsData {
       contract_address: string;
     }
   >;
+  categories: string[];
   image: {
+    thumb: string;
     large: string;
     small: string;
   };
@@ -64,6 +66,11 @@ declare interface CoinDetailsData {
       usd: number;
       [key: string]: number;
     };
+    price_change_percentage_24h: number;
+    price_change_percentage_7d: number;
+    price_change_percentage_14d: number;
+    price_change_percentage_30d: number;
+    price_change_percentage_1y: number;
     price_change_24h_in_currency: {
       usd: number;
     };
@@ -76,6 +83,8 @@ declare interface CoinDetailsData {
     market_cap: {
       usd: number;
     };
+    market_cap_change_24h: number;
+    market_cap_change_percentage_24h: number;
     total_volume: {
       usd: number;
     };

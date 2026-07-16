@@ -9,10 +9,8 @@ import { formatCurrency } from "@/lib/utils";
 const Page = async ({ params }: NextPageProps) => {
   const { id } = await params;
 
-  const [coinData] = await fetcher<CoinMarketData[]>(`/coins//markets`, {
+  const coinData = await fetcher<CoinDetailsData>(`/coins/${id}`, {
     vs_currency: "usd",
-    ids: id,
-    price_change_percentage: "24h,30d",
   });
 
   const coinPrice = await fetcher<CoinPriceData>(`/simple//price`, {
@@ -29,7 +27,7 @@ const Page = async ({ params }: NextPageProps) => {
   const coinDetails = [
     {
       label: "Market Cap",
-      value: formatCurrency(coinData.market_cap),
+      value: formatCurrency(coinData.market_data.market_cap.usd),
     },
     {
       label: "Market Cap Rank",
@@ -37,7 +35,7 @@ const Page = async ({ params }: NextPageProps) => {
     },
     {
       label: "Total Volume",
-      value: formatCurrency(coinData.total_volume),
+      value: formatCurrency(coinData.market_data.total_volume.usd),
     },
   ];
 
@@ -47,12 +45,14 @@ const Page = async ({ params }: NextPageProps) => {
         <div>
           <CoinHeader
             name={coinData.name}
-            image={coinData.image}
+            image={coinData.image.large}
             marketCapRank={coinData.market_cap_rank}
-            currentPrice={coinData.current_price}
-            priceChangePercentage24h={coinData.price_change_percentage_24h}
+            currentPrice={coinData.market_data.current_price.usd}
+            priceChangePercentage24h={
+              coinData.market_data.price_change_percentage_24h
+            }
             priceChangePercentage30d={
-              coinData.price_change_percentage_30d_in_currency
+              coinData.market_data.price_change_percentage_30d
             }
           />
           <Separator className="divider" />
@@ -73,7 +73,7 @@ const Page = async ({ params }: NextPageProps) => {
             {coinDetails.map(({ label, value }, index) => (
               <li key={index}>
                 <p className={label}>{label}</p>
-                <p className="text-base font-medium">{value}</p>
+                <p className="text-base font-medium">{value || "-"}</p>
               </li>
             ))}
           </ul>
@@ -82,7 +82,7 @@ const Page = async ({ params }: NextPageProps) => {
       <section className="secondary">
         <Converter
           symbol={coinData.symbol}
-          icon={coinData.image}
+          icon={coinData.image.small}
           priceList={coinPrice[id]}
         />
       </section>
