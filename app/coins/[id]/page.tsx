@@ -1,5 +1,7 @@
+import CandlestickChart from "@/components/CandlestickChart";
 import CoinHeader from "@/components/CoinHeader";
 import Converter from "@/components/Converter";
+import { Separator } from "@/components/ui/separator";
 
 import { fetcher } from "@/lib/coingecko.actions";
 import { formatCurrency } from "@/lib/utils";
@@ -16,6 +18,12 @@ const Page = async ({ params }: NextPageProps) => {
   const coinPrice = await fetcher<CoinPriceData>(`/simple//price`, {
     vs_currencies: "usd,eur,gbp",
     ids: id,
+  });
+
+  const coinOHLCData = await fetcher<OHLCData[]>(`/coins/${id}/ohlc`, {
+    vs_currency: "usd",
+    days: 1,
+    precision: "full",
   });
 
   const coinDetails = [
@@ -36,16 +44,28 @@ const Page = async ({ params }: NextPageProps) => {
   return (
     <main id="coin-details-page">
       <section className="primary">
-        <CoinHeader
-          name={coinData.name}
-          image={coinData.image}
-          marketCapRank={coinData.market_cap_rank}
-          currentPrice={coinData.current_price}
-          priceChangePercentage24h={coinData.price_change_percentage_24h}
-          priceChangePercentage30d={
-            coinData.price_change_percentage_30d_in_currency
-          }
-        />
+        <div>
+          <CoinHeader
+            name={coinData.name}
+            image={coinData.image}
+            marketCapRank={coinData.market_cap_rank}
+            currentPrice={coinData.current_price}
+            priceChangePercentage24h={coinData.price_change_percentage_24h}
+            priceChangePercentage30d={
+              coinData.price_change_percentage_30d_in_currency
+            }
+          />
+          <Separator className="divider" />
+          <div className="trend mt-10 md:flex-row">
+            <CandlestickChart
+              coinId={id}
+              data={coinOHLCData}
+              initialPeriod="daily"
+            >
+              <h4>Trend Overview</h4>
+            </CandlestickChart>
+          </div>
+        </div>
         <div className="details">
           <h4>Coin Details</h4>
 
