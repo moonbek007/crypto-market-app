@@ -120,10 +120,10 @@ const CandlestickChart = ({
 
   return (
     <div id="candlestick-chart">
-      <div className="chart-header">
+      <div className="chart-header md:flex-row md:justify-between">
         <div className="flex-1">{children}</div>
 
-        <div className="button-group">
+        <div className="button-group sm:justify-end md:justify-end">
           <span className="text-sm mx-2 font-medium text-purple-100/50">
             Period:
           </span>
