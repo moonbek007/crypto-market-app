@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import SearchModal from "./SearchModal";
 
 const Header = () => {
   const pathname = usePathname();
@@ -28,7 +29,7 @@ const Header = () => {
           >
             Home
           </Link>
-          <p>Search Modal</p>
+          <SearchModal />
           <Link
             href="/coins"
             className={cn("nav-link", {
