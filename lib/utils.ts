@@ -34,8 +34,8 @@ export function formatPercentage(change: number | null | undefined): string {
   if (change === null || change === undefined || isNaN(change)) {
     return "0.0%";
   }
-  const formattedChange = change.toFixed(1);
-  return `${formattedChange}%`;
+  const formattedChange = change.toFixed(2);
+  return `${change > 0 ? `+${formattedChange}` : formattedChange}%`;
 }
 
 export function convertOHLCData(data: OHLCData[]) {
