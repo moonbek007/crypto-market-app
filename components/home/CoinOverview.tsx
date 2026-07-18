@@ -24,11 +24,9 @@ const CoinOverview = () => {
           {
             vs_currency: "usd",
             days: 1,
-            // interval: "hourly",
             precision: "full",
           },
         );
-        console.log(coinDataOHLCData);
         setCoinOHLCData(coinDataOHLCData);
       } catch (error) {
         console.error("Error fetching coin overview:", error);

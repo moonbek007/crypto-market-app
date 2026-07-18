@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Search, TrendingUp, TrendingDown } from "lucide-react";
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -16,24 +17,84 @@ import { Button } from "./ui/button";
 
 import { fetcher } from "@/lib/coingecko.actions";
 import { cn, formatCurrency, formatPercentage } from "@/lib/utils";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function CryptoSearchModal() {
   const [searchToken, setSearchToken] = useState("");
   const [trendingCoins, setTrendingCoins] = useState<TrendingCoin[] | null>(
     null,
   );
+  const pathName = usePathname();
+
+  const [coinList, setCoinList] = useState<CoinListData[] | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    closeButtonRef.current?.click();
+  }, [pathName]);
 
   useEffect(() => {
     const getTrendingCoins = async () => {
       const { coins: tCoins } = await fetcher<{ coins: TrendingCoin[] }>(
         "/search/trending",
         undefined,
-        300,
       );
       setTrendingCoins(tCoins.slice(0, 5));
     };
     getTrendingCoins();
+
+    const getCoinList = async () => {
+      const coins = await fetcher<CoinListData[]>("/coins/list", undefined);
+      setCoinList(coins);
+    };
+    getCoinList();
   }, []);
+
+  const handleSearchToken = async () => {
+    const filteredCoins = coinList?.filter((coin) => {
+      return coin.name.toUpperCase().includes(searchToken.toUpperCase());
+    });
+
+    let coinNames: string;
+    if (filteredCoins?.length && filteredCoins?.length < 100) {
+      coinNames = filteredCoins?.map((coin) => coin.name).join(",");
+    } else {
+      coinNames = filteredCoins
+        ?.slice(0, 100)
+        ?.map((coin) => coin.name)
+        .join(",")!;
+    }
+
+    const newCoins = await fetcher<CoinMarketData[]>("/coins/markets", {
+      vs_currency: "usd",
+      names: coinNames,
+    });
+
+    setTrendingCoins(
+      newCoins
+        .sort((a, b) => b.current_price - a.current_price)
+        .slice(0, 5)
+        .map((coin) => {
+          return {
+            item: {
+              id: coin.id,
+              name: coin.name,
+              market_cap_rank: coin.market_cap_rank,
+              symbol: coin.symbol,
+              thumb: coin.image,
+              large: coin.image,
+              data: {
+                price: coin.current_price,
+                price_change_percentage_24h: {
+                  usd: coin.price_change_percentage_24h,
+                },
+              },
+            },
+          };
+        }),
+    );
+  };
 
   return (
     <div className="flex items-center justify-center">
@@ -62,83 +123,102 @@ export default function CryptoSearchModal() {
 
                 <Input
                   type="text"
-                  placeholder="Search for a token by name or symbol"
-                  //   value={searchToken}
+                  placeholder="Search for a token by name"
+                  value={searchToken}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setSearchToken(e.target.value)
                   }
                   className="w-full bg-[#1a2a46] border border-white/10 rounded-lg py-3.5 pl-12 pr-4 text-white text-sm placeholder-[#8fa0dd]/50 outline-none focus:border-white/20 transition-colors"
                 />
               </div>
-              <Button className="flex items-center gap-2 bg-[#36dd61] text-[#050a14] border-none rounded-lg px-6 font-semibold text-sm hover:opacity-90 transition-opacity cursor-pointer">
+              <Button
+                className="flex items-center gap-2 bg-[#36dd61] text-[#050a14] border-none rounded-lg px-6 font-semibold text-sm hover:opacity-90 transition-opacity cursor-pointer"
+                onClick={handleSearchToken}
+              >
                 <Search size={16} />
                 <span>Search</span>
               </Button>
             </div>
           </DialogHeader>
+          <DialogClose
+            render={
+              <Button
+                className="hidden"
+                type="button"
+                ref={closeButtonRef}
+              ></Button>
+            }
+          />
 
           {/* List Display Section */}
-          <div className="flex flex-col">
-            <h3 className="text-[#8fa0dd]/60 text-xs font-medium uppercase tracking-wider mb-4">
-              Trending assets
-            </h3>
-
-            <div className="flex flex-col gap-1 max-h-87.5 overflow-y-auto subtle-scrollbar">
-              {trendingCoins?.length &&
-                trendingCoins.map((asset) => (
-                  <div
-                    key={asset.item.id}
-                    className="flex justify-between items-center px-4 py-3 rounded-lg hover:bg-[#1a2a46] transition-colors cursor-pointer group"
-                  >
-                    <div className="flex items-center gap-3.5">
+          <div className="flex flex-col scrollbar-none overflow-auto">
+            {trendingCoins?.length && (
+              <>
+                <h3 className="text-[#8fa0dd]/60 text-xs font-medium uppercase tracking-wider mb-4">
+                  Trending assets
+                </h3>
+                <div className="flex flex-col gap-1 max-h-87.5 overflow-y-auto subtle-scrollbar">
+                  {trendingCoins.map((asset) => (
+                    <Link href={`/coins/${asset.item.id}`} key={asset.item.id}>
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-base text-white shrink-0`}
+                        key={asset.item.id}
+                        className="flex justify-between items-center px-3 py-3 rounded-lg hover:bg-[#1a2a46] transition-colors cursor-pointer group"
                       >
-                        <Image
-                          src={asset.item.thumb}
-                          alt="token icon"
-                          width={32}
-                          height={32}
-                        />
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-white font-medium text-sm">
-                          {asset.item.id}
-                        </span>
-                        <span className="text-[#8fa0dd]/60 text-sm">
-                          ({asset.item.symbol})
-                        </span>
-                      </div>
-                    </div>
+                        <div className="flex items-center gap-3.5">
+                          <div
+                            className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-base text-white shrink-0`}
+                          >
+                            <Image
+                              src={asset.item.thumb}
+                              alt="token icon"
+                              width={28}
+                              height={32}
+                            />
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-white font-medium text-sm">
+                              {asset.item.id}
+                            </span>
+                            <span className="text-[#8fa0dd]/60 text-sm">
+                              ({asset.item.symbol})
+                            </span>
+                          </div>
+                        </div>
 
-                    <div className="flex items-center gap-6 min-w-40 justify-between">
-                      <span
-                        className={cn(
-                          `flex items-center gap-1 text-sm font-medium w-20 justify-end`,
-                          `${
-                            asset.item.data.price_change_percentage_24h.usd >= 0
-                              ? "text-[#10b981]"
-                              : "text-[#ef4444]"
-                          }`,
-                        )}
-                      >
-                        {asset.item.data.price_change_percentage_24h.usd >=
-                        0 ? (
-                          <TrendingUp size={14} />
-                        ) : (
-                          <TrendingDown size={14} />
-                        )}
-                        {formatPercentage(
-                          asset.item.data.price_change_percentage_24h.usd,
-                        )}
-                      </span>
-                      <span className="text-white font-medium text-sm">
-                        {formatCurrency(asset.item.data.price)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-            </div>
+                        <div className="flex items-center gap-6 min-w-40 justify-between">
+                          <span
+                            className={cn(
+                              `flex items-center gap-1 text-sm font-medium w-20 justify-end`,
+                              `${
+                                asset.item.data.price_change_percentage_24h
+                                  .usd >= 0
+                                  ? "text-[#10b981]"
+                                  : "text-[#ef4444]"
+                              }`,
+                            )}
+                          >
+                            {asset.item.data.price_change_percentage_24h.usd >=
+                            0 ? (
+                              <TrendingUp size={14} />
+                            ) : (
+                              <TrendingDown size={14} />
+                            )}
+                            {formatPercentage(
+                              asset.item.data.price_change_percentage_24h.usd,
+                            )}
+                          </span>
+                          <span className="text-white font-medium text-sm">
+                            {asset.item.data.price < 0.001
+                              ? "> $0.001"
+                              : formatCurrency(asset.item.data.price)}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </DialogContent>
       </Dialog>

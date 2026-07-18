@@ -101,6 +101,15 @@ declare interface CoinDetailsData {
   tickers: Ticker[];
 }
 
+declare interface CoinListData {
+  id: string;
+  symbol: string;
+  name: string;
+  platforms: {
+    [platform: string]: string;
+  };
+}
+
 declare interface Category {
   name: string;
   top_3_coins: string[];
