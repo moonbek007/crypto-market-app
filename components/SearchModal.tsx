@@ -40,7 +40,7 @@ export default function CryptoSearchModal() {
         "/search/trending",
         undefined,
       );
-      setTrendingCoins(tCoins.slice(0, 5));
+      setTrendingCoins(tCoins);
     };
     getTrendingCoins();
 
@@ -74,7 +74,6 @@ export default function CryptoSearchModal() {
     setTrendingCoins(
       newCoins
         .sort((a, b) => b.current_price - a.current_price)
-        .slice(0, 5)
         .map((coin) => {
           return {
             item: {
