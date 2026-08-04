@@ -100,9 +100,8 @@ export default function CryptoSearchModal() {
     <div className="flex items-center justify-center">
       <Dialog>
         <DialogTrigger
-          asChild={true}
           render={
-            <Button className="px-5 py-2.5 bg-green-500 text-gray-900 font-semibold rounded-lg text-sm shadow-lg cursor-pointer">
+            <Button className="px-5 py-2.5 bg-green-500 text-gray-900 font-semibold rounded-lg text-sm shadow-lg cursor-pointer hover:bg-green-400 hover:text-amber-50">
               Search
             </Button>
           }
@@ -110,7 +109,7 @@ export default function CryptoSearchModal() {
 
         <DialogContent
           showCloseButton={false}
-          className="sm:max-w-160 bg-[#121c2e] border-white/5 p-6 shadow-2xl rounded-xl gap-0 text-white"
+          className="sm:max-w-160 bg-[#121c2e] border-white/5 p-6 max-md:px-4 shadow-2xl rounded-xl gap-0 text-white"
         >
           <DialogHeader className="mb-6 space-y-0">
             <DialogTitle className="sr-only">Search</DialogTitle>
@@ -132,7 +131,7 @@ export default function CryptoSearchModal() {
                 />
               </div>
               <Button
-                className="flex items-center gap-2 bg-[#36dd61] text-[#050a14] border-none rounded-lg px-6 font-semibold text-sm hover:opacity-90 transition-opacity cursor-pointer"
+                className="flex items-center gap-2 bg-[#36dd61] text-[#050a14] border-none rounded-lg px-6 font-semibold  hover:text-gray-200 hover:bg-gray-700 text-sm transition-opacity cursor-pointer"
                 onClick={handleSearchToken}
               >
                 <Search size={16} />
@@ -157,14 +156,14 @@ export default function CryptoSearchModal() {
                 <h3 className="text-[#8fa0dd]/60 text-xs font-medium uppercase tracking-wider mb-4">
                   Trending assets
                 </h3>
-                <div className="flex flex-col gap-1 max-h-87.5 overflow-y-auto subtle-scrollbar">
+                <div className="flex flex-col max-[425px]:pr-1! max-sm:pr-1.5 sm:pr-2 gap-1 max-h-87.5 overflow-y-scroll subtle-scrollbar scrollbar-thin [scrollbar-color:#999_transparent]">
                   {trendingCoins.map((asset) => (
                     <Link href={`/coins/${asset.item.id}`} key={asset.item.id}>
                       <div
                         key={asset.item.id}
-                        className="flex justify-between items-center px-3 py-3 rounded-lg hover:bg-[#1a2a46] transition-colors cursor-pointer group"
+                        className="flex justify-between items-center px-3 py-3 max-sm:p-1 max-xl:px-1 max-xl:py-2 max-[425px]:px-0!  max-[425px]:justify-start  max-[425px]:gap-1.5 rounded-lg hover:bg-[#1a2a46] transition-colors cursor-pointer group"
                       >
-                        <div className="flex items-center gap-3.5">
+                        <div className="flex items-center gap-3.5 max-[425px]:gap-1.5 ">
                           <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-base text-white shrink-0`}
                           >
@@ -175,20 +174,20 @@ export default function CryptoSearchModal() {
                               height={32}
                             />
                           </div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-white font-medium text-sm">
+                          <div className="flex items-center gap-1.5 max-md:flex-col max-md:items-start max-md:gap-0.5 max-[425px]:w-[clamp(80px,min(140px,30vw),160px)]! max-sm:w-[min(30vw,250px)] max-lg:w-[min(40vw,350px)] max-2xl:w-[min(25vw,250px)] 2xl:w-[min(30vw,350px)]">
+                            <p className="text-white font-medium text-sm  max-[425px]:text-[14px] md:w-max">
                               {asset.item.id}
-                            </span>
-                            <span className="text-[#8fa0dd]/60 text-sm">
-                              ({asset.item.symbol})
-                            </span>
+                              <span className="text-[#8fa0dd]/60 text-sm max-[425px]:text-[14px] ml-2">
+                                ({asset.item.symbol})
+                              </span>
+                            </p>
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-6 min-w-40 justify-between">
+                        <div className="flex items-center gap-6 min-w-40 justify-between max-[425px]:ml-auto max-[425px]:gap-2  max-[425px]:min-w-max">
                           <span
                             className={cn(
-                              `flex items-center gap-1 text-sm font-medium w-20 justify-end`,
+                              `flex items-center gap-1 text-sm font-medium w-20 justify-end  max-[425px]:text-xs`,
                               `${
                                 asset.item.data.price_change_percentage_24h
                                   .usd >= 0
@@ -207,7 +206,7 @@ export default function CryptoSearchModal() {
                               asset.item.data.price_change_percentage_24h.usd,
                             )}
                           </span>
-                          <span className="text-white font-medium text-sm">
+                          <span className="text-white font-medium text-sm  max-[425px]:text-xs">
                             {asset.item.data.price < 0.001
                               ? "> $0.001"
                               : formatCurrency(asset.item.data.price)}
