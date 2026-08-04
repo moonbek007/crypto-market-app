@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <header>
       <div className="main-container inner">
-        <Link href="">
+        <Link href="/">
           <Image
             src="/logo.svg"
             alt="Crypto App Logo"
@@ -32,9 +32,13 @@ const Header = () => {
           <SearchModal />
           <Link
             href="/coins"
-            className={cn("nav-link", {
-              "is-active": pathname === "/coins",
-            })}
+            className={cn(
+              "nav-link",
+              "max-sm:text-xs max-sm:text-center max-sm:px-2",
+              {
+                "is-active": pathname === "/coins",
+              },
+            )}
           >
             All Coins
           </Link>

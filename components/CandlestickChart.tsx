@@ -15,7 +15,7 @@ import {
   PERIOD_CONFIG,
 } from "@/lib/constants";
 import { fetcher } from "@/lib/coingecko.actions";
-import { convertOHLCData } from "@/lib/utils";
+import { cn, convertOHLCData } from "@/lib/utils";
 
 const CandlestickChart = ({
   children,
@@ -130,9 +130,10 @@ const CandlestickChart = ({
           {PERIOD_BUTTONS.map(({ value, label }) => (
             <button
               key={value}
-              className={
-                period === value ? "config-button-active" : "config-button"
-              }
+              className={cn("max-sm:p-2", {
+                "config-button-active": period === value,
+                "config-button": period !== value,
+              })}
               onClick={() => handlePeriodChange(value)}
               disabled={isPending}
             >

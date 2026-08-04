@@ -40,7 +40,7 @@ const CoinOverview = () => {
   return (
     <div id="coin-overview">
       <CandlestickChart data={coinOHLCData as OHLCData[]} coinId="bitcoin">
-        <div className="header pt-2">
+        <div className="header pt-2 max-sm:pt-0 items-center">
           <Image
             src={coin.image.large}
             alt={coin.name}
@@ -48,10 +48,10 @@ const CoinOverview = () => {
             height={56}
           />
           <div className="info">
-            <p>
+            <p className="max-sm:text-xl">
               {coin.name} / {coin.symbol.toUpperCase()}
             </p>
-            <h1 className="text-amber-50">
+            <h1 className="text-amber-50 max-sm:text-2xl">
               {formatCurrency(coin.market_data.current_price.usd)}
             </h1>
           </div>

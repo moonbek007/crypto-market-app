@@ -299,7 +299,7 @@
     }
 
     .category-cell {
-      @apply pl-5 font-bold;
+      @apply pl-5 font-bold overflow-clip;
     }
 
     .top-gainers-cell {
