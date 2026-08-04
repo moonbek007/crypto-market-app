@@ -29,12 +29,13 @@ const CoinsPagination = ({
   return (
     <Pagination className="" id="coins-pagination">
       <PaginationContent className="pagination-content">
-        <PaginationItem className="pagination-control prev">
+        <PaginationItem className="pagination-control text-amber-50 p-1">
           <PaginationPrevious
             onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-            className={
-              currentPage === 1 ? "control-disabled" : "control-button"
-            }
+            className={cn("max-[425px]:p-0.5!", {
+              "control-disabled": currentPage === 1,
+              "control-button": currentPage !== 1,
+            })}
           />
         </PaginationItem>
 
@@ -42,14 +43,19 @@ const CoinsPagination = ({
           {pageNumbers.map((page, index) => (
             <PaginationItem key={index}>
               {page === ELLIPSIS ? (
-                <span className="ellipsis">...</span>
+                <span className="ellipsis text-amber-50 max-[425px]:p-1!">
+                  ...
+                </span>
               ) : (
                 <PaginationLink
                   isActive={currentPage === page}
                   onClick={() => handlePageChange(page)}
-                  className={cn("page-link", {
-                    "page-link-active": currentPage === page,
-                  })}
+                  className={cn(
+                    "page-link bg-transparent text-amber-100 hover:text-amber-50 max-[425px]:size-7!",
+                    {
+                      "page-link-active": currentPage === page,
+                    },
+                  )}
                 >
                   {page}
                 </PaginationLink>
@@ -58,10 +64,13 @@ const CoinsPagination = ({
           ))}
         </div>
 
-        <PaginationItem className="pagination-control next">
+        <PaginationItem className="pagination-control text-amber-50 p-1 hover:bg-accent-foreground">
           <PaginationNext
             onClick={() => !isLastPage && handlePageChange(currentPage + 1)}
-            className={isLastPage ? "control-disabled" : "control-button"}
+            className={cn("max-[425px]:p-0.5!", {
+              "control-disabled": isLastPage,
+              "control-button": !isLastPage,
+            })}
           />
         </PaginationItem>
       </PaginationContent>

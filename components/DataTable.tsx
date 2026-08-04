@@ -50,7 +50,7 @@ const DataTable = <T,>({
               <TableCell
                 key={columnIndex}
                 className={cn(
-                  "py-4 first:pl-5 last:pr-5 text-gray-100",
+                  "py-4 first:pl-5 last:pr-5 text-gray-100  max-md:max-w-[50vw] max-lg:max-w-[22vw]",
                   bodyCellClassName,
                   column.cellClassName,
                 )}
