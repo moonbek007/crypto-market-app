@@ -22,7 +22,7 @@ const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
 
   return (
     <div id="converter">
-      <h4>{symbol.toUpperCase()} Converter</h4>
+      <h4 className="text-gray-50">{symbol.toUpperCase()} Converter</h4>
 
       <div className="panel">
         <div className="input-wrapper">
@@ -33,7 +33,7 @@ const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setAmount(e?.target?.value)
             }
-            className="input"
+            className="input text-gray-200"
           />
           <div className="coin-info">
             <Image src={icon} alt={symbol} width={20} height={20} />
@@ -54,7 +54,9 @@ const Converter = ({ symbol, icon, priceList }: ConverterProps) => {
         </div>
 
         <div className="output-wrapper">
-          <p>{formatCurrency(convertedPrice, 2, currency, false)}</p>
+          <p className="text-gray-200">
+            {formatCurrency(convertedPrice, 2, currency, false)}
+          </p>
 
           <Select
             value={currency}

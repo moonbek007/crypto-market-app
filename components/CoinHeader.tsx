@@ -42,19 +42,35 @@ const CoinHeader = ({
 
   return (
     <div id="coin-header">
-      <h3>{name}</h3>
+      <h3 className="text-amber-50 max-sm:text-2xl">{name}</h3>
 
       <div className="info">
         <Image src={image} alt={name} width={77} height={77} />
 
         <div className="price-row">
-          <h1>{formatCurrency(currentPrice)}</h1>
+          <h1 className="text-white max-sm:text-2xl">
+            {formatCurrency(currentPrice)}
+          </h1>
           <Badge
-            className={cn("badge", isTrendingUp ? "badge-up" : "badge-down")}
+            className={cn("badge", "max-sm:mt-0", {
+              "badge-up text-green-500": isTrendingUp,
+              "badge-down text-red-500": !isTrendingUp,
+            })}
             render={<></>}
           >
-            {formatPercentage(priceChangePercentage24h)}
-            {isTrendingUp ? <TrendingUp /> : <TrendingDown />}
+            <span
+              className={cn("badge p-1 bg-transparent", {
+                "badge-up": isTrendingUp,
+                "badge-down": !isTrendingUp,
+              })}
+            >
+              {formatPercentage(priceChangePercentage24h)}
+            </span>
+            {isTrendingUp ? (
+              <TrendingUp className="text-green-400 max-sm:self-center" />
+            ) : (
+              <TrendingDown className="text-red-500  max-sm:self-center" />
+            )}
           </Badge>
         </div>
       </div>
@@ -68,14 +84,29 @@ const CoinHeader = ({
               className={cn("value", {
                 "text-green-500": stat.showIcon && stat.isUp,
                 "text-red-500": stat.showIcon && !stat.isUp,
+                "text-gray-200": !stat.showIcon,
               })}
             >
-              <p>{stat.formatter ? stat.formatter(stat.value) : stat.value}</p>
+              <p>
+                {stat.formatter
+                  ? stat.formatter(stat.value)
+                  : stat.value
+                    ? stat.value
+                    : "-"}
+              </p>
               {stat.showIcon &&
                 (stat.isUp ? (
-                  <TrendingUp width={16} height={16} />
+                  <TrendingUp
+                    width={16}
+                    height={16}
+                    className="max-sm:self-center"
+                  />
                 ) : (
-                  <TrendingDown width={16} height={16} />
+                  <TrendingDown
+                    width={16}
+                    height={16}
+                    className="max-sm:self-center"
+                  />
                 ))}
             </div>
           </li>

@@ -66,20 +66,22 @@ const Page = async ({ params }: NextPageProps) => {
             </CandlestickChart>
           </div>
         </div>
+      </section>
+      <section className="secondary">
         <div className="details">
-          <h4>Coin Details</h4>
+          <h4 className="text-gray-50">Coin Details</h4>
 
           <ul className="details-grid">
             {coinDetails.map(({ label, value }, index) => (
-              <li key={index}>
-                <p className={label}>{label}</p>
-                <p className="text-base font-medium">{value || "-"}</p>
+              <li key={index} className="">
+                <p className="label">{label}</p>
+                <p className="text-base font-medium text-gray-300 lg:text-sm">
+                  {value || "-"}
+                </p>
               </li>
             ))}
           </ul>
         </div>
-      </section>
-      <section className="secondary">
         <Converter
           symbol={coinData.symbol}
           icon={coinData.image.small}
