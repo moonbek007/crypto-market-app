@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
+@variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -89,6 +90,21 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --dark-900: #000510;
+  --dark-700: #0f1316;
+  --dark-500: #1a2027;
+  --dark-400: #1e2833;
+
+  --purple-600: #1b254b;
+  --purple-100: #a3aed0;
+
+  --green-500: #76da44;
+  --green-400: #2ebe7b;
+  --green-300: #99e39e;
+
+  --red-500: #ff685f;
+  --yellow-500: #dabe44;
 }
 
 .dark {
@@ -283,7 +299,7 @@
     }
 
     .category-cell {
-      @apply pl-5 font-bold;
+      @apply pl-5 font-bold overflow-clip;
     }
 
     .top-gainers-cell {
@@ -500,10 +516,10 @@
   }
 
   #coin-details-page {
-    @apply py-12 px-4 sm:px-6 mx-auto max-w-360 size-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 items-center gap-6 xl:gap-10 justify-center;
+    @apply max-sm:py-6 py-12 px-4 sm:py-6! sm:px-6 mx-auto max-w-360 size-full grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 items-center gap-6 xl:gap-10 justify-center;
 
     .primary {
-      @apply size-full xl:col-span-2;
+      @apply size-full lg:col-span-2 xl:col-span-2;
     }
 
     .secondary {
@@ -547,14 +563,14 @@
     }
 
     .details {
-      @apply w-full mt-8 space-y-4;
+      @apply w-full space-y-4;
 
       h4 {
         @apply text-xl md:text-2xl font-semibold mb-2 pb-3;
       }
 
       .details-grid {
-        @apply rounded-lg grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 gap-3 sm:gap-5;
+        @apply rounded-lg grid grid-cols-1 gap-3 sm:gap-5;
 
         li {
           @apply text-base bg-dark-500 px-5 py-6 rounded-lg flex flex-col gap-3;
@@ -572,7 +588,7 @@
   }
 
   #coins-page {
-    @apply py-12 px-4 sm:px-6 mx-auto max-w-360 size-full items-center gap-10 justify-center;
+    @apply py-12 px-4 max-[425px]:py-5! max-sm:py-5 sm:px-6 sm:py-8 mx-auto max-w-360 size-full items-center gap-10 justify-center;
 
     .content {
       @apply flex flex-col w-full space-y-5;
@@ -692,7 +708,7 @@
   }
 
   #converter {
-    @apply w-full space-y-5;
+    @apply w-full space-y-5 mt-4!;
 
     h4 {
       @apply text-2xl font-semibold;
@@ -844,7 +860,7 @@
       @apply bg-dark-400 rounded-sm py-1;
 
       &.prev {
-        @apply pr-2;
+        @apply p-2;
       }
 
       &.next {
@@ -872,7 +888,7 @@
       }
 
       .page-link-active {
-        @apply bg-green-500! text-dark-900 font-semibold;
+        @apply text-dark-900 font-semibold;
       }
     }
   }
